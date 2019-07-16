@@ -1,0 +1,110 @@
+<!DOCTYPE HTML>
+<!--
+	Alpha by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+	<head>
+		<title>Кулюшин Г.А.</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+	</head>
+	<body class="is-preload">
+		<div id="page-wrapper">
+
+			<!-- Header -->
+				<header id="header">
+					<h1><a href="index.html">Панов А.А.</a> Администратор</h1>
+					<nav id="nav">
+						<ul>
+							<li><a href="index.html">Главная</a></li>
+							<li>
+								<a href="#" class="icon fa-angle-down">Пользователи</a>
+								<ul>
+									<li><a href="Matushkin.html">Матюшкин Г.В.</a></li>
+									<li><a href="Konovalov.html">Коновалов В.А.</a></li>
+									<li><a href="Kulushin.html">Кулюшин Г.А.</a></li>
+								</ul>
+							</li>
+						</ul>
+					</nav>
+				</header>
+				
+			<!-- Main -->
+				<section id="main" class="container">
+					<header>
+						<h2>Кулюшин Г.А.</h2>
+						<div class="image-wrap">
+   <img src="images/pic06.jpg" class="image-center">
+</div>
+						<p>Индекс производительности ПО 1С:Предприятие 8.3</p>
+						
+						
+					</header>
+				</section>
+
+<?php 
+/* Подключение к серверу MySQL */ 
+$link = mysqli_connect( 
+            'localhost',  /* Хост, к которому мы подключаемся */ 
+            'admin',       /* Имя пользователя */ 
+            '1q2w3e4r',   /* Используемый пароль */ 
+            'apdex');     /* База данных для запросов по умолчанию */ 
+ 
+if (!$link) { 
+   echo "Ошибка подключения к базе данных. Код ошибки: ".mysqli_connect_error(); 
+   exit; 
+} 
+if (!mysqli_set_charset($link, "utf8")) {
+   		echo "Ошибка при загрузке набора символов utf8: " . mysqli_error($con);
+	}
+if ($result = mysqli_query($link, 'SELECT t.operation, t.startdate, t.username, t.APDEX FROM monitoring t inner join (SELECT operation, max(startdate) as MaxDate FROM monitoring group by operation) tm on t.operation = tm.operation and t.startdate = tm.MaxDate')) { 
+ 
+ 
+    /* Выборка результатов запроса */ 
+	
+	echo "<table width='100%'' border='1' >
+	<caption> Индекс производительности </caption>
+	<tr>
+	                    <th> Номер операции </th>
+                        <th> Операция </th>					
+						<th> Время выполнения замера </th>					
+						<th> Пользователь </th>				
+						<th> APDEX </th>
+							
+					</tr>";
+					$numberOfString = 0;
+					
+    while( $row = mysqli_fetch_assoc($result) ){ 
+	                $numberOfString++;
+					echo"         
+						<tr>
+						<td> $numberOfString </td>
+						<td> $row[operation] </td>
+                        <td> $row[startdate] </td>
+                        <td> $row[username] </td>
+                        <td> $row[APDEX] </td>						
+                    </tr>";
+    } 
+     echo"</table>";
+    /* Освобождаем используемую память */ 
+    mysqli_free_result($result); 
+} 
+ 
+ 
+/* Закрываем соединение */ 
+mysqli_close($link); 
+?>
+		</div>
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.dropotron.min.js"></script>
+			<script src="assets/js/jquery.scrollex.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+	</body>
+</html>
